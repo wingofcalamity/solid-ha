@@ -5,7 +5,7 @@
   "requirements": ["aiohttp"],
   "documentation": "https://github.com/wingofcalamity/solid-ha/README.md",
   "iot_class": "cloud_polling",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "codeowners": ["@wingofcalamity"],
   "issue_tracker": "https://github.com/wingofcalamity/solid-ha/issues"
 }

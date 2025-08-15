@@ -50,12 +50,8 @@ class SolidConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(
                     "OIDC", default="https://tmdt-solid-community-server.de"
                 ): cv.string,
-                vol.Required(
-                    "POD", default=""
-                ): cv.string,
-                vol.Required(
-                    "CLIENT_TOKEN", default=""
-                ): cv.string,
+                vol.Required("POD", default=""): cv.string,
+                vol.Required("CLIENT_TOKEN", default=""): cv.string,
                 vol.Required(
                     "CLIENT_SECRET",
                     default="",

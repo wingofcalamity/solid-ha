@@ -9,7 +9,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.event import async_track_state_change_event
 
 from .const import DOMAIN
-from .oidc_client import SolidOIDCClient
 
 LOGGER = logging.getLogger(__name__)
 
@@ -17,13 +16,11 @@ LOGGER = logging.getLogger(__name__)
 async def async_start_sensor_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Start listening to the selected sensor and send updates to the Pod."""
     data = entry.data
-    oidc = SolidOIDCClient(
-        hass, data["OIDC"], data["POD"], data["CLIENT_TOKEN"], data["CLIENT_SECRET"]
-    )
+    cache = hass.data[DOMAIN][entry.entry_id]["cache"]
 
     async def handle_sensor_change(event):
         """Handle sensor state change."""
-        entity_id = event.data["entity_id"]
+        # entity_id = event.data["entity_id"]
         new_state = event.data.get("new_state")
 
         if not new_state or new_state.state in ("unknown", "unavailable"):
@@ -36,9 +33,9 @@ async def async_start_sensor_listener(hass: HomeAssistant, entry: ConfigEntry) -
             entry.data,
         )
 
-        await oidc.put(
-            f"{entity_id}",
+        await cache.async_append(
             {
+                "timestamp": new_state.last_changed.isoformat(),
                 "state": new_state.state,
                 "attributes": new_state.attributes,
             },
